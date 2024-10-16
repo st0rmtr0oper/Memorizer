@@ -5,7 +5,7 @@ import com.djentleman.memorizer.domain.repository.MemorizerRepository
 
 class InspectNoteUseCase(private val memorizerRepository: MemorizerRepository) {
 
-    fun inspectNote(id: Int): Note {
+    suspend fun inspectNote(id: Int): Note {
         return memorizerRepository.inspectNote(id)
     }
 }

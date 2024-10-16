@@ -5,7 +5,7 @@ import com.djentleman.memorizer.domain.repository.MemorizerRepository
 
 class DeleteNoteUseCase(private val memorizerRepository: MemorizerRepository) {
 
-    fun deleteNote(note: Note) {
+    suspend fun deleteNote(note: Note) {
         memorizerRepository.deleteNote(note)
     }
 }

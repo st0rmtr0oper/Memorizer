@@ -5,7 +5,7 @@ import com.djentleman.memorizer.domain.repository.MemorizerRepository
 
 class SaveNoteUseCase(private val memorizerRepository: MemorizerRepository) {
 
-    fun saveNote(note: Note) {
+    suspend fun saveNote(note: Note) {
         memorizerRepository.saveNote(note)
     }
 }
