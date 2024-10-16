@@ -1,8 +1,13 @@
 package com.djentleman.memorizer.domain.models
 
+//TODO
 data class Note(
     val fileName: String,
-    val fileMd: Int
+    val fileMd: Int,
 
-    //TODO how to do that
-)
+    var id: Int = UNDEFINED_ID
+) {
+    companion object {
+        const val UNDEFINED_ID = -1
+    }
+}

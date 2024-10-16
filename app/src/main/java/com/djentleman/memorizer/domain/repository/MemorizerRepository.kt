@@ -8,6 +8,6 @@ interface MemorizerRepository {
     fun deleteNote(note: Note)
     fun getNotesList(): List<Note>
     fun inspectNote(id: Int): Note
-    fun redactNote(note: Note)
+    fun editNote(note: Note)
     fun saveNote(note: Note)
 }
