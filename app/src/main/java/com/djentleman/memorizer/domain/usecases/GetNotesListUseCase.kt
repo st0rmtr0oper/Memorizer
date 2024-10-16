@@ -6,7 +6,7 @@ import com.djentleman.memorizer.domain.repository.MemorizerRepository
 
 class GetNotesListUseCase(private val memorizerRepository: MemorizerRepository) {
 
-    suspend fun getNotesList(): LiveData<List<Note>> {
+    fun getNotesList(): LiveData<List<Note>> {
         return memorizerRepository.getNotesList()
     }
 }

@@ -45,7 +45,7 @@ class NotesFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        viewModel.list.observe(viewLifecycleOwner) { list: List<Note> ->
+        viewModel.notesList.observe(viewLifecycleOwner) { list: List<Note> ->
             showNoteList(list)
         }
     }
