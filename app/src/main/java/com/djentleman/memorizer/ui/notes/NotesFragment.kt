@@ -1,4 +1,4 @@
-package com.djentleman.memorizer.ui.slideshow
+package com.djentleman.memorizer.ui.notes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.djentleman.memorizer.databinding.FragmentSlideshowBinding
+import com.djentleman.memorizer.databinding.FragmentNotesBinding
 
-class SlideshowFragment : Fragment() {
+class NotesFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    private var _binding: FragmentNotesBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val notesViewModel =
+            ViewModelProvider(this).get(NotesViewModel::class.java)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
+        _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textHome
+        notesViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
