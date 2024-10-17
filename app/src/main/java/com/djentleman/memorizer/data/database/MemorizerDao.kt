@@ -9,7 +9,7 @@ import com.djentleman.memorizer.domain.models.NoteStatus
 @Dao
 interface MemorizerDao {
 
-    @Query("SELECT * FROM notes WHERE noteStatus = :status")
+    @Query("SELECT * FROM notes WHERE noteStatus =:status")
     fun getNotesList(status: NoteStatus = NoteStatus.ACTUAL): LiveData<List<NoteDbModel>>
 
     @Query("SELECT * FROM notes WHERE noteStatus = :status")

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.djentleman.memorizer.data.repository.MemorizerRepositoryImpl
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.usecases.AddNoteUseCase
@@ -11,6 +12,7 @@ import com.djentleman.memorizer.domain.usecases.GetNotesListUseCase
 import com.djentleman.memorizer.domain.usecases.InspectNoteUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToArchiveUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
+import kotlinx.coroutines.launch
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
     //TODO Это неправильно, pres зависит от data
@@ -28,20 +30,29 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
 //        notesList.value = getNotesListUseCase.getNotesList()
 //    }
 
-    suspend fun addNote(note: Note) {
-        addNoteListUseCase.addNote(note)
+     fun addNote(note: Note) {
+        viewModelScope.launch {
+            addNoteListUseCase.addNote(note)
+        }
+
     }
 
 //    suspend fun inspectNote(id: Int) {
 //        inspectedNote.value = inspectNoteUseCase.inspectNote(id)
 //    }
 
-    suspend fun moveNoteToArchive(id: Int) {
-        moveNoteToArchiveUseCase.moveNoteToArchive(id)
+     fun moveNoteToArchive(id: Int) {
+         viewModelScope.launch {
+             moveNoteToArchiveUseCase.moveNoteToArchive(id)
+         }
+
     }
 
-    suspend fun moveNoteToTrash(id: Int) {
-        moveNoteToTrashUseCase.moveNoteToTrash(id)
+     fun moveNoteToTrash(id: Int) {
+         viewModelScope.launch {
+             moveNoteToTrashUseCase.moveNoteToTrash(id)
+         }
+
     }
 
 //    fun changeEnableState(shopItem: ShopItem) {

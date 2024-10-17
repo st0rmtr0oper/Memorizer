@@ -6,6 +6,6 @@ import com.djentleman.memorizer.domain.repository.MemorizerRepository
 class MoveNoteToArchiveUseCase(private val memorizerRepository: MemorizerRepository) {
 
     suspend fun moveNoteToArchive(id: Int) {
-        return memorizerRepository.moveNoteToArchive(id)
+        memorizerRepository.moveNoteToArchive(id)
     }
 }

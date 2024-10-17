@@ -10,7 +10,7 @@ data class NoteDbModel(
     val id: Int,
     val header: String,
     val content: String,
-    val tags: List<String>,
+    val tags: String,
     val noteStatus: NoteStatus,
-    val image: List<String>
+    val image: String
 )

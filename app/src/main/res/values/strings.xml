@@ -10,4 +10,9 @@
     <string name="menu_notes">Notes</string>
     <string name="menu_archive">Archive</string>
     <string name="menu_trash">Trash</string>
+
+    <string name="fab_notes_add">Trash</string>
+    <string name="fab_trash_clear_all">Trash</string>
+    <string name="editor_content_hint">Текст заметки</string>
+    <string name="editor_header_hint">Заголовок</string>
 </resources>

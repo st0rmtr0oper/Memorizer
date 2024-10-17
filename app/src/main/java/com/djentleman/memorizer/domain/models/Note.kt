@@ -4,13 +4,12 @@ package com.djentleman.memorizer.domain.models
 data class Note(
     val header: String,
     val content: String,
-    val tags: List<String>,
+    val tags: String,
     val noteStatus: NoteStatus,
-    val image: List<String>,
-
-    var id: Int = UNDEFINED_ID
+    val image: String,
+    val id: Int = UNDEFINED_ID
 ) {
     companion object {
-        const val UNDEFINED_ID = -1
+        const val UNDEFINED_ID = 0
     }
 }
