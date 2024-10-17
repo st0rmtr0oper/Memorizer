@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/nav_notes"
         android:name="com.djentleman.memorizer.ui.notes.NotesFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_notes"
         tools:layout="@layout/fragment_notes" />
 
     <fragment
         android:id="@+id/nav_archive"
         android:name="com.djentleman.memorizer.ui.archive.ArchiveFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_archive"
         tools:layout="@layout/fragment_archive" />
 
     <fragment
         android:id="@+id/nav_trash"
         android:name="com.djentleman.memorizer.ui.trash.TrashFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_trash"
         tools:layout="@layout/fragment_trash" />
 </navigation>

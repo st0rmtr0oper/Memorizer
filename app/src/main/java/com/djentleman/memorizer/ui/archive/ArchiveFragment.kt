@@ -23,15 +23,11 @@ class ArchiveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val archiveViewModel =
-            ViewModelProvider(this).get(ArchiveViewModel::class.java)
+            ViewModelProvider(this)[ArchiveViewModel::class.java]
 
         _binding = FragmentArchiveBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        archiveViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

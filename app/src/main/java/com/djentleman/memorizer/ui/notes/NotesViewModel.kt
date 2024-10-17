@@ -1,45 +1,59 @@
 package com.djentleman.memorizer.ui.notes
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.djentleman.memorizer.data.repository.MemorizerRepositoryImpl
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.usecases.AddNoteUseCase
-import com.djentleman.memorizer.domain.usecases.DeleteNoteUseCase
 import com.djentleman.memorizer.domain.usecases.GetNotesListUseCase
 import com.djentleman.memorizer.domain.usecases.InspectNoteUseCase
+import com.djentleman.memorizer.domain.usecases.MoveNoteToArchiveUseCase
+import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
+import kotlinx.coroutines.launch
 
-class NotesViewModel : ViewModel() {
+class NotesViewModel(application: Application) : AndroidViewModel(application) {
     //TODO Это неправильно, pres зависит от data
-    private val repository = MemorizerRepositoryImpl
-    private val getNotesListUsecase = GetNotesListUseCase(repository)
-    private val addNotesListUsecase = AddNoteUseCase(repository)
-    private val deleteNoteUsecase = DeleteNoteUseCase(repository)
-    private val inspectNoteUsecase = InspectNoteUseCase(repository)
+    private val repository = MemorizerRepositoryImpl(application)
 
-    val list = MutableLiveData<List<Note>>()
-    val inspectedNote = MutableLiveData<Note>()
+    private val getNotesListUseCase = GetNotesListUseCase(repository)
+    private val addNoteListUseCase = AddNoteUseCase(repository)
+    private val inspectNoteUseCase = InspectNoteUseCase(repository)
+    private val moveNoteToArchiveUseCase = MoveNoteToArchiveUseCase(repository)
+    private val moveNoteToTrashUseCase = MoveNoteToTrashUseCase(repository)
 
-    fun getNotesList() {
-        val newList = getNotesListUsecase.getNotesList()
-        list.value = newList
+    val notesList = getNotesListUseCase.getNotesList()
+
+//    suspend fun getNotesList() {
+//        notesList.value = getNotesListUseCase.getNotesList()
+//    }
+
+     fun addNote(note: Note) {
+        viewModelScope.launch {
+            addNoteListUseCase.addNote(note)
+        }
+
     }
 
-    fun deleteNote(note: Note) {
-        deleteNoteUsecase.deleteNote(note)
-        getNotesList()
+//    suspend fun inspectNote(id: Int) {
+//        inspectedNote.value = inspectNoteUseCase.inspectNote(id)
+//    }
+
+     fun moveNoteToArchive(id: Int) {
+         viewModelScope.launch {
+             moveNoteToArchiveUseCase.moveNoteToArchive(id)
+         }
+
     }
 
-    fun addNote(note: Note) {
-        addNotesListUsecase.addNote(note)
-        getNotesList()
-    }
+     fun moveNoteToTrash(id: Int) {
+         viewModelScope.launch {
+             moveNoteToTrashUseCase.moveNoteToTrash(id)
+         }
 
-    fun inspectNote(id: Int) {
-        val note = inspectNoteUsecase.inspectNote(id)
-        inspectedNote.value = note
     }
-
 
 //    fun changeEnableState(shopItem: ShopItem) {
 //        val newItem = shopItem.copy(enabled = !shopItem.enabled)
