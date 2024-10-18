@@ -14,7 +14,9 @@ class ArchiveFragment : Fragment() {
     private val binding by lazy {
         FragmentArchiveBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: ArchiveViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this)[ArchiveViewModel::class.java]
+    }
     private lateinit var archiveAdapter: NotesAdapter
 
     override fun onCreateView(
@@ -22,7 +24,6 @@ class ArchiveFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[ArchiveViewModel::class.java]
         return binding.root
     }
 

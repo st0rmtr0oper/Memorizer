@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.djentleman.memorizer.databinding.FragmentNotesBinding
+import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.ui.utils.NotesAdapter
 
@@ -17,7 +19,9 @@ class NotesFragment : Fragment() {
     private val binding by lazy {
         FragmentNotesBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: NotesViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this)[NotesViewModel::class.java]
+    }
     private lateinit var notesAdapter: NotesAdapter
 
     override fun onCreateView(
@@ -25,7 +29,6 @@ class NotesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
         return binding.root
     }
 
@@ -33,6 +36,7 @@ class NotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpObservers()
+        setUpAddButton()
     }
 
     private fun setUpRecyclerView() {
@@ -62,7 +66,6 @@ class NotesFragment : Fragment() {
             ): Boolean {
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val noteId = notesAdapter.currentList[viewHolder.adapterPosition].id
                 when (direction) {
@@ -94,6 +97,12 @@ class NotesFragment : Fragment() {
         }
     }
 
+    private fun setUpAddButton() {
+        binding.fab.setOnClickListener {
+            findNavController().navigate(NotesFragmentDirections.actionNotesToEditor(EditorMode.ADD, -1))
+        }
+    }
+
     private fun showNoteDialog(note: Note) {
         TODO()
         //showdialog
@@ -113,8 +122,17 @@ class NotesFragment : Fragment() {
 }
 
 
-//        binding.appBarMain.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .setAnchorView(R.id.fab).show()
-//        }
+//{ view ->
+//    Snackbar.make(view, "Тыкнуто", Snackbar.LENGTH_LONG)
+//        .setAction("Action", null)
+//        .setAnchorView(R.id.fab).show()
+//}
+
+//viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
+//    activity?.onBackPressed()
+//}
+//  //we cant use finish() in fragment
+
+//activity?  - nullable      - more safe
+//requireActivity  - non nullable     - if null it crush app
+

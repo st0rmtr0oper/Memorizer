@@ -2,14 +2,12 @@ package com.djentleman.memorizer.ui.notes
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.djentleman.memorizer.data.repository.MemorizerRepositoryImpl
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.usecases.AddNoteUseCase
 import com.djentleman.memorizer.domain.usecases.GetNotesListUseCase
-import com.djentleman.memorizer.domain.usecases.InspectNoteUseCase
+import com.djentleman.memorizer.domain.usecases.LoadNoteUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToArchiveUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
 import kotlinx.coroutines.launch
@@ -20,7 +18,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val getNotesListUseCase = GetNotesListUseCase(repository)
     private val addNoteListUseCase = AddNoteUseCase(repository)
-    private val inspectNoteUseCase = InspectNoteUseCase(repository)
+    private val loadNoteUseCase = LoadNoteUseCase(repository)
     private val moveNoteToArchiveUseCase = MoveNoteToArchiveUseCase(repository)
     private val moveNoteToTrashUseCase = MoveNoteToTrashUseCase(repository)
 

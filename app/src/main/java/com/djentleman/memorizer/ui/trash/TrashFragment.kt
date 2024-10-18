@@ -14,7 +14,9 @@ class TrashFragment : Fragment() {
     private val binding by lazy {
         FragmentTrashBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: TrashViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this)[TrashViewModel::class.java]
+    }
     private lateinit var trashAdapter: NotesAdapter
 
     override fun onCreateView(
@@ -22,7 +24,6 @@ class TrashFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[TrashViewModel::class.java]
         return binding.root
     }
 }
