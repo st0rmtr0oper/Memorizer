@@ -1,4 +1,4 @@
-package com.djentleman.memorizer.ui.archive
+package com.djentleman.memorizer.ui.editor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,23 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.djentleman.memorizer.databinding.FragmentArchiveBinding
-import com.djentleman.memorizer.ui.utils.NotesAdapter
+import com.djentleman.memorizer.databinding.FragmentNoteEditorBinding
 
-class ArchiveFragment : Fragment() {
+class EditorFragment : Fragment() {
 
     private val binding by lazy {
-        FragmentArchiveBinding.inflate(layoutInflater)
+        FragmentNoteEditorBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: ArchiveViewModel
-    private lateinit var archiveAdapter: NotesAdapter
+    private lateinit var viewModel: EditorViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[ArchiveViewModel::class.java]
+        viewModel = ViewModelProvider(this)[EditorViewModel::class.java]
         return binding.root
     }
 

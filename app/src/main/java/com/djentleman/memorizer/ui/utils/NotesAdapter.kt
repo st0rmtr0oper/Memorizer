@@ -3,7 +3,7 @@ package com.djentleman.memorizer.ui.utils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.djentleman.memorizer.R
+import com.djentleman.memorizer.databinding.NoteRecyclerItemBinding
 import com.djentleman.memorizer.domain.models.Note
 
 class NotesAdapter : ListAdapter<Note, NoteItemViewHolder>(NoteItemDiffCallback()) {
@@ -12,28 +12,29 @@ class NotesAdapter : ListAdapter<Note, NoteItemViewHolder>(NoteItemDiffCallback(
     var onNoteItemLongClickListener: ((Note) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.note_recycler_item,
-                parent,
-                false
-            )
-        return NoteItemViewHolder(view)
+        val binding = NoteRecyclerItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return NoteItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(viewHolder: NoteItemViewHolder, position: Int) {
         val note = getItem(position)
-        viewHolder.view.setOnClickListener {
-            onNoteItemClickListener?.invoke(note)
+
+        with(viewHolder.binding) {
+            root.setOnClickListener {
+                onNoteItemClickListener?.invoke(note)
+            }
+            root.setOnLongClickListener {
+                onNoteItemLongClickListener?.invoke(note)
+                true
+            }
+            noteHeader.text = note.header
+            noteContent.text = note.content
+            statusBar.setBackgroundColor(getNoteStatusColor(note.noteStatus))
         }
-        viewHolder.view.setOnLongClickListener {
-            onNoteItemLongClickListener?.invoke(note)
-            true
-        }
-        viewHolder.noteHeader.text = note.header
-        viewHolder.noteContent.text = note.content
-        viewHolder.statusBar.setBackgroundColor(getNoteStatusColor(note.noteStatus))
-        viewHolder.itemView
     }
 
     companion object {

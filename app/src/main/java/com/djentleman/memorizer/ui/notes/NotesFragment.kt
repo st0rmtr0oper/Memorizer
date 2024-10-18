@@ -14,13 +14,9 @@ import com.djentleman.memorizer.ui.utils.NotesAdapter
 
 class NotesFragment : Fragment() {
 
-    //TODO what to do with binding
-    private var _binding: FragmentNotesBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
+    private val binding by lazy {
+        FragmentNotesBinding.inflate(layoutInflater)
+    }
     private lateinit var viewModel: NotesViewModel
     private lateinit var notesAdapter: NotesAdapter
 
@@ -30,20 +26,13 @@ class NotesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
-        _binding = FragmentNotesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpObservers()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun setUpRecyclerView() {
@@ -73,6 +62,7 @@ class NotesFragment : Fragment() {
             ): Boolean {
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val noteId = notesAdapter.currentList[viewHolder.adapterPosition].id
                 when (direction) {
@@ -104,22 +94,27 @@ class NotesFragment : Fragment() {
         }
     }
 
-    private fun inspectNote(note: Note) {
-        TODO()
-        //viewmodel.inspect?
-        //navigation
-    }
-
     private fun showNoteDialog(note: Note) {
         TODO()
         //showdialog
     }
 
+    private fun inspectNote(note: Note) {
+//        viewModel.(id)
+    }
+
     private fun moveNoteToArchive(id: Int) {
-        TODO()
+        viewModel.moveNoteToArchive(id)
     }
 
     private fun moveNoteToTrash(id: Int) {
-        TODO()
+        viewModel.moveNoteToTrash(id)
     }
 }
+
+
+//        binding.appBarMain.fab.setOnClickListener { view ->
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null)
+//                .setAnchorView(R.id.fab).show()
+//        }

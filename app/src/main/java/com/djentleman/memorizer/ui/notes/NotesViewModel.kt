@@ -15,7 +15,7 @@ import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
 import kotlinx.coroutines.launch
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
-    //TODO Это неправильно, pres зависит от data
+    //TODO Это неправильно, pres зависит от data. лечится DI вроде как
     private val repository = MemorizerRepositoryImpl(application)
 
     private val getNotesListUseCase = GetNotesListUseCase(repository)
