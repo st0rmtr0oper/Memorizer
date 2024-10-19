@@ -109,7 +109,12 @@ class NotesFragment : Fragment() {
     }
 
     private fun inspectNote(note: Note) {
-//        viewModel.(id)
+        findNavController().navigate(
+            NotesFragmentDirections.actionNotesToEditor(
+                EditorMode.INSPECT,
+                note.id
+            )
+        )
     }
 
     private fun moveNoteToArchive(id: Int) {

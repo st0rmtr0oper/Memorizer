@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.djentleman.memorizer.databinding.FragmentNoteEditorBinding
 import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
+import com.djentleman.memorizer.domain.models.NoteStatus
 
 class EditorFragment : Fragment() {
 
@@ -20,6 +25,7 @@ class EditorFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(this)[EditorViewModel::class.java]
     }
+    private lateinit var mode: EditorMode
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,8 +37,10 @@ class EditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkMode()
         setUpObservers()
+        setUpButtons()
+        setUpOnBackListener()
+        checkMode()
     }
 
     private fun checkMode() {
@@ -40,18 +48,21 @@ class EditorFragment : Fragment() {
         val noteId = args.noteId
         when (editorMode) {
             EditorMode.ADD -> {
-//                getDraft()
-//                enableEditMode()
+                getDraft()
+                enableAddMode()
+                mode = EditorMode.ADD
             }
 
             EditorMode.EDIT -> {
-//                getNote(noteId)
-//                enableEditMode()
+                getNote(noteId)
+                enableEditMode()
+                mode = EditorMode.EDIT
             }
 
             EditorMode.INSPECT -> {
-//                getNote(noteId)
-//                enableInspectMode()
+                getNote(noteId)
+                enableInspectMode()
+                mode = EditorMode.INSPECT
             }
         }
     }
@@ -62,22 +73,34 @@ class EditorFragment : Fragment() {
         }
     }
 
-    private fun getDraft() {
-        viewModel.loadDraft()
-    }
-
-    private fun getNote(noteId: Int) {
-        viewModel.loadNote(noteId)
+    private fun enableAddMode() {
+        with(binding) {
+            noteHeaderEdit.isEnabled = true
+            noteContentEdit.isEnabled = true
+            fabAdd.isVisible = true
+            fabEdit.isGone = true
+            fabSave.isGone = true
+        }
     }
 
     private fun enableEditMode() {
-        //editable true
-        //buttons
+        with(binding) {
+            noteHeaderEdit.isEnabled = true
+            noteContentEdit.isEnabled = true
+            fabAdd.isGone = true
+            fabEdit.isGone = true
+            fabSave.isVisible = true
+        }
     }
 
     private fun enableInspectMode() {
-        //editable false
-        //buttons
+        with(binding) {
+            noteHeaderEdit.isEnabled = false
+            noteContentEdit.isEnabled = false
+            fabAdd.isGone = true
+            fabEdit.isVisible = true
+            fabSave.isGone = true
+        }
     }
 
     private fun setUpNote(note: Note) {
@@ -86,6 +109,108 @@ class EditorFragment : Fragment() {
             noteContentEdit.setText(note.content)
             //TODO other elements in future
         }
+    }
+
+    private fun setUpButtons() {
+
+        with(binding) {
+            fabSave.setOnClickListener {
+                val editedNote = Note(
+                    binding.noteHeaderEdit.text.toString(),
+                    binding.noteContentEdit.text.toString(),
+                    //TODO looks like shit???
+                    "",
+                    viewModel.note.value!!.noteStatus,
+//                    getNoteStatus(),
+                    ""
+                    //TODO it should work in other way???
+//                    viewModel.note.value.tags,
+//                    viewModel.note.value.noteStatus,
+                )
+                saveNote(editedNote)
+                enableInspectMode()
+                //what with callbacks? do i need other observable val in viewmodel for updating?
+            }
+            fabEdit.setOnClickListener {
+                enableEditMode()
+            }
+            fabAdd.setOnClickListener {
+                val newNote = Note(
+                    binding.noteHeaderEdit.text.toString(),
+                    binding.noteContentEdit.text.toString(),
+                    "",
+                    NoteStatus.ACTUAL,
+                    ""
+                )
+                addNote(newNote)
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun setUpOnBackListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            handleBackPress()
+        }
+        //TODO up button
+    }
+
+    private fun handleBackPress() {
+        when (mode) {
+            EditorMode.ADD -> {
+                val draftNote = Note(
+                    binding.noteHeaderEdit.text.toString(),
+                    binding.noteContentEdit.text.toString(),
+                    "",
+                    NoteStatus.ACTUAL,
+                    ""
+                )
+                saveDraft(draftNote)
+                findNavController().popBackStack()
+            }
+
+            EditorMode.EDIT -> {
+                showUnsavedExitSnackBar()
+            }
+
+            EditorMode.INSPECT -> {
+                findNavController().popBackStack()
+
+            }
+        }
+    }
+
+    private fun showUnsavedExitSnackBar() {
+//        { view ->
+//    Snackbar.make(view, "Тыкнуто", Snackbar.LENGTH_LONG)
+//        .setAction("Action", null)
+//        .setAnchorView(R.id.fab).show()
+//}
+    }
+
+//    private fun getNoteStatus(): NoteStatus {
+//        val value = viewModel.note.value
+//        return value?.noteStatus ?: NoteStatus.ACTUAL
+//    }
+
+    private fun getDraft() {
+        viewModel.loadDraft()
+    }
+
+    private fun saveDraft(note: Note) {
+        viewModel.saveDraft(note)
+    }
+
+    private fun getNote(noteId: Int) {
+        viewModel.loadNote(noteId)
+    }
+
+    private fun saveNote(note: Note) {
+        viewModel.saveNote(note)
+    }
+
+    private fun addNote(note: Note) {
+        viewModel.addNote(note)
     }
 }
 

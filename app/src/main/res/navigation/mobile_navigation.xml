@@ -5,8 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_notes">
 
-    <!--    TODO check navigation-->
-
     <fragment
         android:id="@+id/nav_notes"
         android:name="com.djentleman.memorizer.ui.notes.NotesFragment"
@@ -23,7 +21,7 @@
         android:id="@+id/nav_archive"
         android:name="com.djentleman.memorizer.ui.archive.ArchiveFragment"
         android:label="@string/menu_archive"
-        tools:layout="@layout/fragment_archive" >
+        tools:layout="@layout/fragment_archive">
         <action
             android:id="@+id/action_nav_archive_to_nav_edit"
             app:destination="@id/nav_edit" />
@@ -33,7 +31,7 @@
         android:id="@+id/nav_trash"
         android:name="com.djentleman.memorizer.ui.trash.TrashFragment"
         android:label="@string/menu_trash"
-        tools:layout="@layout/fragment_trash" >
+        tools:layout="@layout/fragment_trash">
         <action
             android:id="@+id/action_nav_trash_to_nav_edit"
             app:destination="@id/nav_edit" />
@@ -43,7 +41,7 @@
         android:id="@+id/nav_edit"
         android:name="com.djentleman.memorizer.ui.editor.EditorFragment"
         android:label="@string/menu_editor"
-        tools:layout="@layout/fragment_note_editor" >
+        tools:layout="@layout/fragment_note_editor">
         <argument
             android:name="editorMode"
             app:argType="com.djentleman.memorizer.domain.models.EditorMode" />
