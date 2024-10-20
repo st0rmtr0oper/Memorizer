@@ -168,12 +168,11 @@ class EditorFragment : Fragment() {
             .show()
 
     private fun showUnsavedExitSnackBar() {
-        Log.i("SHOW SUKA", "AAAAAAAAAAAAAAAAAAA")
         AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.alert_dialog_unsaved_exit_title)
             setMessage(getString(R.string.alert_dialog_unsaved_exit_message))
             setPositiveButton(R.string.alert_dialog_unsaved_exit_discard) { _, _ ->
-                //TODO go back
+                findNavController().popBackStack()
             }
             setNegativeButton(R.string.alert_dialog_unsaved_exit_cancel, null)
         }.show()
