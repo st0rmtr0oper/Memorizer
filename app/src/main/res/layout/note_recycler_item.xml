@@ -13,11 +13,10 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <ProgressBar
+        <View
             android:id="@+id/status_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="40dp"
-            android:layout_height="8dp"
+            android:layout_width="16dp"
+            android:layout_height="4dp"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp" />
 
@@ -36,19 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"
             android:textSize="18sp"
             tools:text="Текст заметки \n\n\n че то тут написано" />
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/note_date_of_edit"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@+id/card_text"-->
-        <!--            android:layout_alignParentEnd="true"-->
-        <!--            android:layout_marginTop="8dp"-->
-        <!--            android:textColor="@color/black"-->
-        <!--            tools:text="2024.10.17|15:57"-->
-        <!--            android:textSize="12sp" />-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>

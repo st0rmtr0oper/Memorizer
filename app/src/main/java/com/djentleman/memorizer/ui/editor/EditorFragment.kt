@@ -1,20 +1,24 @@
 package com.djentleman.memorizer.ui.editor
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.djentleman.memorizer.R
 import com.djentleman.memorizer.databinding.FragmentNoteEditorBinding
 import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.models.NoteStatus
+import com.google.android.material.snackbar.Snackbar
 
 class EditorFragment : Fragment() {
 
@@ -59,19 +63,16 @@ class EditorFragment : Fragment() {
             EditorMode.ADD -> {
                 getDraft()
                 enableAddMode()
-                mode = EditorMode.ADD
             }
 
             EditorMode.EDIT -> {
                 getNote(noteId)
                 enableEditMode()
-                mode = EditorMode.EDIT
             }
 
             EditorMode.INSPECT -> {
                 getNote(noteId)
                 enableInspectMode()
-                mode = EditorMode.INSPECT
             }
         }
     }
@@ -90,6 +91,7 @@ class EditorFragment : Fragment() {
             fabEdit.isGone = true
             fabSave.isGone = true
         }
+        mode = EditorMode.ADD
     }
 
     private fun enableEditMode() {
@@ -100,6 +102,7 @@ class EditorFragment : Fragment() {
             fabEdit.isGone = true
             fabSave.isVisible = true
         }
+        mode = EditorMode.EDIT
     }
 
     private fun enableInspectMode() {
@@ -110,6 +113,7 @@ class EditorFragment : Fragment() {
             fabEdit.isVisible = true
             fabSave.isGone = true
         }
+        mode = EditorMode.INSPECT
     }
 
     private fun setUpNote(note: Note) {
@@ -139,6 +143,7 @@ class EditorFragment : Fragment() {
                 )
                 saveNote(editedNote)
                 enableInspectMode()
+                showSaveSnackBar()
                 //what with callbacks? do i need other observable val in viewmodel for updating?
             }
             fabEdit.setOnClickListener {
@@ -156,6 +161,21 @@ class EditorFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun showSaveSnackBar() =
+        Snackbar.make(binding.root, getString(R.string.snack_bar_saved), Snackbar.LENGTH_LONG)
+            .show()
+
+    private fun showUnsavedExitSnackBar() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(R.string.alert_dialog_unsaved_exit_title)
+            setMessage(getString(R.string.alert_dialog_unsaved_exit_message))
+            setPositiveButton(R.string.alert_dialog_unsaved_exit_discard) { _, _ ->
+                findNavController().popBackStack()
+            }
+            setNegativeButton(R.string.alert_dialog_unsaved_exit_cancel, null)
+        }.show()
     }
 
     private fun setUpOnBackListener() {
@@ -185,23 +205,9 @@ class EditorFragment : Fragment() {
 
             EditorMode.INSPECT -> {
                 findNavController().popBackStack()
-
             }
         }
     }
-
-    private fun showUnsavedExitSnackBar() {
-//        { view ->
-//    Snackbar.make(view, "Тыкнуто", Snackbar.LENGTH_LONG)
-//        .setAction("Action", null)
-//        .setAnchorView(R.id.fab).show()
-//}
-    }
-
-//    private fun getNoteStatus(): NoteStatus {
-//        val value = viewModel.note.value
-//        return value?.noteStatus ?: NoteStatus.ACTUAL
-//    }
 
     private fun getDraft() {
         viewModel.loadDraft()
