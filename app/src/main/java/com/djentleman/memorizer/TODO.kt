@@ -1,5 +1,16 @@
 package com.djentleman.memorizer
 
 //TODO
-// using LiveData
-// обязательность полей Note
+// inspect+edit
+// dialogues
+// snack bars
+
+//TODO
+// dagger?
+// UI
+// GitHub
+
+// notifications?
+// images?
+// search?
+// tags?

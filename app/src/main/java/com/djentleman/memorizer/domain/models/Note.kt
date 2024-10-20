@@ -1,6 +1,5 @@
 package com.djentleman.memorizer.domain.models
 
-//TODO
 data class Note(
     val header: String,
     val content: String,

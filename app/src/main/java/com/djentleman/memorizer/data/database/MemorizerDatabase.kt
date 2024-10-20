@@ -4,9 +4,10 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import java.util.concurrent.Executors
 
 @Database(entities = [NoteDbModel::class], version = 1, exportSchema = false)
-abstract class MemorizerDatabase: RoomDatabase() {
+abstract class MemorizerDatabase : RoomDatabase() {
 
     abstract fun memorizerDao(): MemorizerDao
 
@@ -28,7 +29,13 @@ abstract class MemorizerDatabase: RoomDatabase() {
                     application,
                     MemorizerDatabase::class.java,
                     DB_NAME
-                ).build()
+                )
+                    .setQueryCallback(RoomDatabase.QueryCallback { sqlQuery, bindArgs ->
+                        println("SQL Query: $sqlQuery SQL Args: $bindArgs")
+                    }, Executors.newSingleThreadExecutor())
+
+
+                    .build()
                 INSTANCE = db
                 return db
             }
