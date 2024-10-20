@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -68,6 +69,7 @@ class NotesFragment : Fragment() {
             ): Boolean {
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val noteId = notesAdapter.currentList[viewHolder.adapterPosition].id
                 when (direction) {
@@ -95,12 +97,6 @@ class NotesFragment : Fragment() {
             .show()
     }
 
-    private fun showDeleteSnackBar() =
-        Snackbar.make(
-            binding.root, getString(R.string.snack_bar_delete),
-            Snackbar.LENGTH_LONG
-        ).show()
-
     private fun setUpRvLongClickListener() {
         notesAdapter.onNoteItemLongClickListener = { showNoteDialog(it) }
     }
@@ -117,19 +113,46 @@ class NotesFragment : Fragment() {
 
     private fun setUpAddButton() {
         binding.fab.setOnClickListener {
-            findNavController().navigate(NotesFragmentDirections.actionNotesToEditor(EditorMode.ADD, -1))
+            findNavController().navigate(
+                NotesFragmentDirections.actionNotesToEditor(
+                    EditorMode.ADD,
+                    -1
+                )
+            )
         }
     }
 
     private fun showNoteDialog(note: Note) {
-        TODO()
-        //showdialog
+        AlertDialog.Builder(requireContext()).setItems(
+            arrayOf(
+                getString(R.string.dialogue_move_to_archive),
+                getString(R.string.dialogue_move_to_trash),
+                getString(R.string.dialogue_inspect),
+                getString(R.string.dialogue_edit)
+            )
+        ) { _, which ->
+            when (which) {
+                0 -> moveNoteToArchive(note.id)
+                1 -> moveNoteToTrash(note.id)
+                2 -> inspectNote(note)
+                3 -> editNote(note)
+            }
+        }.create().show()
     }
 
     private fun inspectNote(note: Note) {
         findNavController().navigate(
             NotesFragmentDirections.actionNotesToEditor(
                 EditorMode.INSPECT,
+                note.id
+            )
+        )
+    }
+
+    private fun editNote(note: Note) {
+        findNavController().navigate(
+            NotesFragmentDirections.actionNotesToEditor(
+                EditorMode.EDIT,
                 note.id
             )
         )

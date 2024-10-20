@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,7 +14,6 @@ import com.djentleman.memorizer.R
 import com.djentleman.memorizer.databinding.FragmentTrashBinding
 import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
-import com.djentleman.memorizer.ui.notes.NotesFragmentDirections
 import com.djentleman.memorizer.ui.utils.NotesAdapter
 import com.google.android.material.snackbar.Snackbar
 
@@ -131,14 +131,39 @@ class TrashFragment : Fragment() {
     }
 
     private fun showNoteDialog(note: Note) {
-        TODO()
-        //showdialog
+        AlertDialog.Builder(requireContext())
+            .setItems(
+                arrayOf(
+                    getString(R.string.dialogue_move_to_actual),
+                    getString(R.string.dialogue_move_to_archive),
+                    getString(R.string.dialogue_inspect),
+                    getString(R.string.dialogue_edit),
+                    getString(R.string.dialogue_delete)
+                )
+            ) { _, which ->
+                when (which) {
+                    0 -> moveNoteToActual(note.id)
+                    1 -> moveNoteToArchive(note.id)
+                    2 -> inspectNote(note)
+                    3 -> editNote(note)
+                    4 -> deleteNote(note.id)
+                }
+            }.create().show()
     }
 
     private fun inspectNote(note: Note) {
         findNavController().navigate(
-            NotesFragmentDirections.actionNotesToEditor(
+            TrashFragmentDirections.actionNavTrashToNavEdit(
                 EditorMode.INSPECT,
+                note.id
+            )
+        )
+    }
+
+    private fun editNote(note: Note) {
+        findNavController().navigate(
+            TrashFragmentDirections.actionNavTrashToNavEdit(
+                EditorMode.EDIT,
                 note.id
             )
         )

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -95,12 +96,6 @@ class ArchiveFragment : Fragment() {
             .show()
     }
 
-    private fun showDeleteSnackBar() =
-        Snackbar.make(
-            binding.root, getString(R.string.snack_bar_delete),
-            Snackbar.LENGTH_LONG
-        ).show()
-
     private fun setUpRvLongClickListener() {
         notesAdapter.onNoteItemLongClickListener = { showNoteDialog(it) }
     }
@@ -116,14 +111,36 @@ class ArchiveFragment : Fragment() {
     }
 
     private fun showNoteDialog(note: Note) {
-        TODO()
-        //showdialog
+        AlertDialog.Builder(requireContext()).setItems(
+            arrayOf(
+                getString(R.string.dialogue_move_to_actual),
+                getString(R.string.dialogue_move_to_trash),
+                getString(R.string.dialogue_inspect),
+                getString(R.string.dialogue_edit)
+            )
+        ) { _, which ->
+            when (which) {
+                0 -> moveNoteToArchive(note.id)
+                1 -> moveNoteToTrash(note.id)
+                2 -> inspectNote(note)
+                3 -> editNote(note)
+            }
+        }.create().show()
     }
 
     private fun inspectNote(note: Note) {
         findNavController().navigate(
             ArchiveFragmentDirections.actionNavArchiveToNavEdit(
                 EditorMode.INSPECT,
+                note.id
+            )
+        )
+    }
+
+    private fun editNote(note: Note) {
+        findNavController().navigate(
+            ArchiveFragmentDirections.actionNavArchiveToNavEdit(
+                EditorMode.EDIT,
                 note.id
             )
         )

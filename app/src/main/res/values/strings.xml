@@ -32,4 +32,11 @@
     <string name="alert_dialog_unsaved_exit_title">Unsaved changes</string>
     <string name="alert_dialog_unsaved_exit_discard">Discard</string>
     <string name="alert_dialog_unsaved_exit_cancel">Cancel</string>
+
+    <string name="dialogue_move_to_actual">Move to Actual</string>
+    <string name="dialogue_move_to_archive">Move to Archive</string>
+    <string name="dialogue_move_to_trash">Move to Trash</string>
+    <string name="dialogue_delete">Delete</string>
+    <string name="dialogue_inspect">Inspect</string>
+    <string name="dialogue_edit">Edit</string>
 </resources>

@@ -63,19 +63,16 @@ class EditorFragment : Fragment() {
             EditorMode.ADD -> {
                 getDraft()
                 enableAddMode()
-                mode = EditorMode.ADD
             }
 
             EditorMode.EDIT -> {
                 getNote(noteId)
                 enableEditMode()
-                mode = EditorMode.EDIT
             }
 
             EditorMode.INSPECT -> {
                 getNote(noteId)
                 enableInspectMode()
-                mode = EditorMode.INSPECT
             }
         }
     }
@@ -94,6 +91,7 @@ class EditorFragment : Fragment() {
             fabEdit.isGone = true
             fabSave.isGone = true
         }
+        mode = EditorMode.ADD
     }
 
     private fun enableEditMode() {
@@ -104,6 +102,7 @@ class EditorFragment : Fragment() {
             fabEdit.isGone = true
             fabSave.isVisible = true
         }
+        mode = EditorMode.EDIT
     }
 
     private fun enableInspectMode() {
@@ -114,6 +113,7 @@ class EditorFragment : Fragment() {
             fabEdit.isVisible = true
             fabSave.isGone = true
         }
+        mode = EditorMode.INSPECT
     }
 
     private fun setUpNote(note: Note) {
