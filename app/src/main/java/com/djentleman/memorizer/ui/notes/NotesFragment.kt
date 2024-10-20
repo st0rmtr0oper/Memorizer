@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -107,7 +109,26 @@ class NotesFragment : Fragment() {
 
     private fun setUpObservers() {
         viewModel.notesList.observe(viewLifecycleOwner) {
-            notesAdapter.submitList(it)
+            if (viewModel.notesList.value!!.isEmpty()) {
+                showPlug()
+            } else {
+                showRecyclerView()
+                notesAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun showPlug() {
+        with(binding) {
+            rvNotes.isGone = true
+            plug.isVisible = true
+        }
+    }
+
+    private fun showRecyclerView() {
+        with(binding) {
+            rvNotes.isVisible = true
+            plug.isGone = true
         }
     }
 

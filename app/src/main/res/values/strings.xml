@@ -12,6 +12,8 @@
     <string name="menu_trash">Trash</string>
     <string name="menu_editor">Note Editor</string>
 
+    <string name="plug_description">This category is empty</string>
+
     <string name="fab_notes_add">Add new note</string>
     <string name="fab_notes_save">Save note</string>
     <string name="fab_notes_edit">Edit note</string>
