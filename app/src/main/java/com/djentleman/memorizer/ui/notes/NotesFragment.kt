@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.djentleman.memorizer.R
 import com.djentleman.memorizer.databinding.FragmentNotesBinding
 import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.ui.utils.NotesAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class NotesFragment : Fragment() {
 
@@ -71,10 +73,14 @@ class NotesFragment : Fragment() {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         moveNoteToTrash(noteId)
+                        val message = getString(R.string.swipe_snack_bar_to_trash)
+                        showSnackBar(noteId, message)
                     }
 
                     ItemTouchHelper.RIGHT -> {
                         moveNoteToArchive(noteId)
+                        val message = getString(R.string.swipe_snack_bar_to_archive)
+                        showSnackBar(noteId, message)
                     }
                 }
             }
@@ -82,6 +88,18 @@ class NotesFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rvNotes)
     }
+
+    private fun showSnackBar(noteId: Int, message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.swipe_snack_bar_undo_button)) { moveNoteToActual(noteId) }
+            .show()
+    }
+
+    private fun showDeleteSnackBar() =
+        Snackbar.make(
+            binding.root, getString(R.string.snack_bar_delete),
+            Snackbar.LENGTH_LONG
+        ).show()
 
     private fun setUpRvLongClickListener() {
         notesAdapter.onNoteItemLongClickListener = { showNoteDialog(it) }
@@ -123,6 +141,10 @@ class NotesFragment : Fragment() {
 
     private fun moveNoteToTrash(id: Int) {
         viewModel.moveNoteToTrash(id)
+    }
+
+    private fun moveNoteToActual(id: Int) {
+        viewModel.moveNoteToActual(id)
     }
 }
 

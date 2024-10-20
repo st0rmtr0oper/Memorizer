@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.djentleman.memorizer.R
 import com.djentleman.memorizer.databinding.FragmentTrashBinding
 import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.ui.notes.NotesFragmentDirections
 import com.djentleman.memorizer.ui.utils.NotesAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class TrashFragment : Fragment() {
 
@@ -74,10 +76,13 @@ class TrashFragment : Fragment() {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         deleteNote(noteId)
+                        showDeleteSnackBar()
                     }
 
                     ItemTouchHelper.RIGHT -> {
                         moveNoteToArchive(noteId)
+                        val message = getString(R.string.swipe_snack_bar_to_archive)
+                        showSnackBar(noteId, message)
                     }
                 }
             }
@@ -85,6 +90,24 @@ class TrashFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rvNotes)
     }
+
+    private fun showSnackBar(noteId: Int, message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.swipe_snack_bar_undo_button)) { moveNoteToTrash(noteId) }
+            .show()
+    }
+
+    private fun showDeleteSnackBar() =
+        Snackbar.make(
+            binding.root, getString(R.string.snack_bar_delete),
+            Snackbar.LENGTH_LONG
+        ).show()
+
+    private fun showClearedAllSanckBar() =
+        Snackbar.make(
+            binding.root, getString(R.string.snack_bar_clear),
+            Snackbar.LENGTH_LONG
+        ).show()
 
     private fun setUpRvLongClickListener() {
         notesAdapter.onNoteItemLongClickListener = { showNoteDialog(it) }
@@ -103,6 +126,7 @@ class TrashFragment : Fragment() {
     private fun setUpClearButton() {
         binding.fab.setOnClickListener {
             clearAll()
+            showClearedAllSanckBar()
         }
     }
 
@@ -126,6 +150,10 @@ class TrashFragment : Fragment() {
 
     private fun moveNoteToActual(id: Int) {
         viewModel.moveNoteToActual(id)
+    }
+
+    private fun moveNoteToTrash(id: Int) {
+        viewModel.moveNoteToTrash(id)
     }
 
     private fun deleteNote(id: Int) {

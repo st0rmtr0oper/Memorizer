@@ -19,4 +19,17 @@
 
     <string name="editor_content_hint">Note text</string>
     <string name="editor_header_hint">Header</string>
+
+    <string name="swipe_snack_bar_to_trash">Moved to Trash</string>
+    <string name="swipe_snack_bar_to_actual">Moved to Actual</string>
+    <string name="swipe_snack_bar_to_archive">Moved to Archive</string>
+    <string name="swipe_snack_bar_undo_button">Undo</string>
+    <string name="snack_bar_delete">Note was Deleted</string>
+    <string name="snack_bar_clear">Cleared All!</string>
+    <string name="snack_bar_saved">Note saved</string>
+
+    <string name="alert_dialog_unsaved_exit_message">The changes have not been applied. Do you want to discard changes?</string>
+    <string name="alert_dialog_unsaved_exit_title">Unsaved changes</string>
+    <string name="alert_dialog_unsaved_exit_discard">Discard</string>
+    <string name="alert_dialog_unsaved_exit_cancel">Cancel</string>
 </resources>

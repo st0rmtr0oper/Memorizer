@@ -9,6 +9,7 @@ import com.djentleman.memorizer.domain.usecases.DeleteNoteUseCase
 import com.djentleman.memorizer.domain.usecases.GetTrashListUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToActualUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToArchiveUseCase
+import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
 import kotlinx.coroutines.launch
 
 class TrashViewModel(application: Application) : AndroidViewModel(application) {
@@ -18,6 +19,7 @@ class TrashViewModel(application: Application) : AndroidViewModel(application) {
     private val getTrashListUseCase = GetTrashListUseCase(repository)
     private val moveNoteToActualUseCase = MoveNoteToActualUseCase(repository)
     private val moveNoteToArchiveUseCase = MoveNoteToArchiveUseCase(repository)
+    private val moveNoteToTrashUseCase = MoveNoteToTrashUseCase(repository)
     private val deleteNoteUseCase = DeleteNoteUseCase(repository)
     private val clearAllTrashUseCase = ClearAllTrashUseCase(repository)
 
@@ -32,6 +34,12 @@ class TrashViewModel(application: Application) : AndroidViewModel(application) {
     fun moveNoteToActual(id: Int) {
         viewModelScope.launch {
             moveNoteToActualUseCase.moveNoteToActual(id)
+        }
+    }
+
+    fun moveNoteToTrash(id: Int) {
+        viewModelScope.launch {
+            moveNoteToTrashUseCase.moveNoteToTrash(id)
         }
     }
 

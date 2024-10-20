@@ -1,9 +1,8 @@
 package com.djentleman.memorizer
 
 //TODO
-// inspect+edit
 // dialogues
-// snack bars
+// problems with on back dispatcher! (up button + exit dialogue are not working)
 
 //TODO
 // dagger?
