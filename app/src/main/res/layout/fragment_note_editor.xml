@@ -38,7 +38,7 @@
         android:visibility="gone"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/fab_notes_add"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@drawable/edit_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_save"
@@ -49,7 +49,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/fab_notes_add"
         android:visibility="gone"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@drawable/save_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
@@ -60,7 +60,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/fab_notes_add"
         android:visibility="gone"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/add_icon" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--TODO-->

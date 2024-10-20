@@ -23,5 +23,5 @@
         android:clickable="true"
         android:contentDescription="@string/fab_notes_add"
         android:focusable="true"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/add_icon" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
