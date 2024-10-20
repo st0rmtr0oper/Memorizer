@@ -2,9 +2,10 @@ package com.djentleman.memorizer.ui.editor
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.djentleman.memorizer.data.repository.MemorizerRepositoryImpl
+import com.djentleman.memorizer.domain.models.EditorMode
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.usecases.AddNoteUseCase
 import com.djentleman.memorizer.domain.usecases.LoadDraftUseCase
@@ -13,7 +14,7 @@ import com.djentleman.memorizer.domain.usecases.SaveDraftUseCase
 import com.djentleman.memorizer.domain.usecases.SaveNoteUseCase
 import kotlinx.coroutines.launch
 
-class EditorViewModel(application: Application) :
+class EditorViewModel(application: Application, mode: EditorMode, noteId: Int) :
     AndroidViewModel(application) {
     //TODO Это неправильно, pres зависит от data. лечится DI вроде как
     private val repository = MemorizerRepositoryImpl(application)
@@ -24,21 +25,19 @@ class EditorViewModel(application: Application) :
     private val saveDraftUseCase = SaveDraftUseCase(repository)
     private val addNoteUseCase = AddNoteUseCase(repository)
 
-    //хз насколько правильно я реализовал подгрузку данных в note, костыли какие то. но я не хотел
-    //прокидывать нужные значения (mode, noteId) через констуркторы, это выглядит еще хуже
-    val note = MutableLiveData<Note>()
+    var note = load(mode, noteId)
 
-    fun loadNote(id: Int) {
+    private fun load(mode: EditorMode, id: Int): LiveData<Note> {
+        return when (mode) {
+            EditorMode.ADD -> loadDraft()
+            EditorMode.EDIT -> loadNote(id)
+            EditorMode.INSPECT -> loadNote(id)
+        }
+    }
+
+    fun loadNote(id: Int): LiveData<Note> {
+        return loadNoteUseCase.loadNote(id)
         //TODO скоуп нужен?
-//        viewModelScope.launch {
-        val log = loadNoteUseCase.loadNote(id).value
-
-        //TODO почему то null получаю тут
-
-    //            note.postValue(
-//                loadNoteUseCase.loadNote(id).value
-//            )
-//        }
     }
 
     fun saveNote(note: Note) {
@@ -53,17 +52,11 @@ class EditorViewModel(application: Application) :
         }
     }
 
-    fun loadDraft() {
-        viewModelScope.launch {
-            note.postValue(
-                loadDraftUseCase.loadDraft().value
-            )
-        }
+    fun loadDraft(): LiveData<Note> {
+        return loadDraftUseCase.loadDraft()
     }
 
     fun saveDraft(note: Note) {
-        viewModelScope.launch {
-            saveDraftUseCase.saveDraft(note)
-        }
+        saveDraftUseCase.saveDraft(note)
     }
 }

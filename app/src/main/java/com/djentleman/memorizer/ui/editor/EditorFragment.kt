@@ -22,10 +22,10 @@ class EditorFragment : Fragment() {
         FragmentNoteEditorBinding.inflate(layoutInflater)
     }
     private val args by navArgs<EditorFragmentArgs>()
-    private val viewModel by lazy {
-        ViewModelProvider(this)[EditorViewModel::class.java]
-    }
+
+    private lateinit var viewModel: EditorViewModel
     private lateinit var mode: EditorMode
+    private var noteId: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +37,15 @@ class EditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //не знаю насколько правильно решение делать именно так, но вроде работает
+        mode = args.editorMode
+        noteId = args.noteId
+        viewModel = ViewModelProvider(
+            this,
+            EditorViewModelFactory(requireActivity().application, mode, noteId)
+        )[EditorViewModel::class.java]
+
         setUpObservers()
         setUpButtons()
         setUpOnBackListener()
@@ -121,8 +130,9 @@ class EditorFragment : Fragment() {
                     //TODO looks like shit???
                     "",
                     viewModel.note.value!!.noteStatus,
-//                    getNoteStatus(),
-                    ""
+                    "",
+                    noteId
+//                    getNoteStatus()
                     //TODO it should work in other way???
 //                    viewModel.note.value.tags,
 //                    viewModel.note.value.noteStatus,

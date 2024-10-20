@@ -15,6 +15,6 @@ interface MemorizerRepository {
     suspend fun moveNoteToArchive(id: Int)
     suspend fun moveNoteToTrash(id: Int)
     suspend fun clearAllTrash()
-    suspend fun saveDraft(note: Note)
+    fun saveDraft(note: Note)
     fun loadDraft(): LiveData<Note>
 }

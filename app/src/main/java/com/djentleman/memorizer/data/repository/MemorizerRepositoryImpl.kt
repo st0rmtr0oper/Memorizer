@@ -77,8 +77,7 @@ class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
         memorizerDao.clearAllTrash()
     }
 
-    override suspend fun saveDraft(note: Note) {
-
+    override fun saveDraft(note: Note) {
         sharedPreferences.edit()
             .putString(NOTE_HEADER, note.header)
             .putString(NOTE_CONTENT, note.content)
@@ -88,7 +87,6 @@ class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
     }
 
     override fun loadDraft(): LiveData<Note> {
-
         val header: String
         val content: String
         val tags: String

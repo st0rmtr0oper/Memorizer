@@ -29,8 +29,7 @@ interface MemorizerDao {
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteNote(noteId: Int)
 
-    @Query("SELECT * FROM notes WHERE id = :noteId")
-//    @Query("SELECT * FROM notes WHERE id = :noteId LIMIT 1")
+    @Query("SELECT * FROM notes WHERE id = :noteId LIMIT 1")
     fun loadNote(noteId: Int): LiveData<NoteDbModel>
 
     @Query("UPDATE notes SET noteStatus = :newStatus WHERE id = :noteId")
