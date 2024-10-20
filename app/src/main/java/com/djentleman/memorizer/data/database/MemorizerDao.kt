@@ -22,7 +22,6 @@ interface MemorizerDao {
     @Insert
     suspend fun addNote(noteDbModel: NoteDbModel)
 
-    //    @Update
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNote(noteDbModel: NoteDbModel)
 

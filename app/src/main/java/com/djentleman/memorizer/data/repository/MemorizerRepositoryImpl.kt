@@ -2,29 +2,30 @@ package com.djentleman.memorizer.data.repository
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import com.djentleman.memorizer.data.database.MemorizerDao
 import com.djentleman.memorizer.data.database.MemorizerDatabase
 import com.djentleman.memorizer.data.database.MemorizerMapper
 import com.djentleman.memorizer.domain.models.Note
 import com.djentleman.memorizer.domain.models.NoteStatus
 import com.djentleman.memorizer.domain.repository.MemorizerRepository
+import javax.inject.Inject
 
-class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
+class MemorizerRepositoryImpl @Inject constructor(
+    private val memorizerDao: MemorizerDao,
+    private val mapper: MemorizerMapper,
+    private val sharedPreferences: SharedPreferences
+) : MemorizerRepository {
 
     companion object {
         const val PREFS_NAME = "my_prefs"
         const val NOTE_HEADER = "note_header"
         const val NOTE_CONTENT = "note_content"
         const val NOTE_TAGS = "note_tags"
-//        const val NOTE_IMAGE = "note_image"
     }
-
-    private val memorizerDao = MemorizerDatabase.getInstance(application).memorizerDao()
-    private val mapper = MemorizerMapper()
-    private val sharedPreferences =
-        application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     override fun getNotesList(): LiveData<List<Note>> = memorizerDao.getNotesList().map {
         mapper.mapListDbModelToListEntity(it)
@@ -48,12 +49,7 @@ class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
     }
 
 
-    //TODO почему Null то...
-    override fun loadNote(id: Int): LiveData<Note>
-//    {
-//        memorizerDao.loadNote(id)
-//    }
-            = memorizerDao.loadNote(id).map {
+    override fun loadNote(id: Int): LiveData<Note> = memorizerDao.loadNote(id).map {
         mapper.mapDbModelToEntity(it)
     }
 
@@ -81,8 +77,6 @@ class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
         sharedPreferences.edit()
             .putString(NOTE_HEADER, note.header)
             .putString(NOTE_CONTENT, note.content)
-            .putString(NOTE_TAGS, note.tags)
-//            .putString(NOTE_IMAGE, note.image)
             .apply()
     }
 
@@ -94,9 +88,8 @@ class MemorizerRepositoryImpl(application: Application) : MemorizerRepository {
             header = getString(NOTE_HEADER, "").toString()
             content = getString(NOTE_CONTENT, "").toString()
             tags = getString(NOTE_TAGS, "").toString()
-//            val image = getString(NOTE_IMAGE, "")
         }
-        val note = Note(header, content, tags, NoteStatus.ACTUAL, "")
+        val note = Note(header, content, NoteStatus.ACTUAL)
         return MutableLiveData(note)
     }
 }

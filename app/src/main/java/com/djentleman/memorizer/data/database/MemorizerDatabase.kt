@@ -33,8 +33,6 @@ abstract class MemorizerDatabase : RoomDatabase() {
                     .setQueryCallback(RoomDatabase.QueryCallback { sqlQuery, bindArgs ->
                         println("SQL Query: $sqlQuery SQL Args: $bindArgs")
                     }, Executors.newSingleThreadExecutor())
-
-
                     .build()
                 INSTANCE = db
                 return db

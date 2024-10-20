@@ -120,7 +120,6 @@ class EditorFragment : Fragment() {
         with(binding) {
             noteHeaderEdit.setText(note.header)
             noteContentEdit.setText(note.content)
-            //TODO other elements in future
         }
     }
 
@@ -131,15 +130,9 @@ class EditorFragment : Fragment() {
                 val editedNote = Note(
                     binding.noteHeaderEdit.text.toString(),
                     binding.noteContentEdit.text.toString(),
-                    //TODO looks like shit???
-                    "",
+                    //TODO that looks bad
                     viewModel.note.value!!.noteStatus,
-                    "",
                     noteId
-//                    getNoteStatus()
-                    //TODO it should work in other way???
-//                    viewModel.note.value.tags,
-//                    viewModel.note.value.noteStatus,
                 )
                 saveNote(editedNote)
                 enableInspectMode()
@@ -153,9 +146,7 @@ class EditorFragment : Fragment() {
                 val newNote = Note(
                     binding.noteHeaderEdit.text.toString(),
                     binding.noteContentEdit.text.toString(),
-                    "",
                     NoteStatus.ACTUAL,
-                    ""
                 )
                 addNote(newNote)
                 findNavController().popBackStack()
@@ -191,9 +182,7 @@ class EditorFragment : Fragment() {
                 val draftNote = Note(
                     binding.noteHeaderEdit.text.toString(),
                     binding.noteContentEdit.text.toString(),
-                    "",
                     NoteStatus.ACTUAL,
-                    ""
                 )
                 saveDraft(draftNote)
                 findNavController().popBackStack()

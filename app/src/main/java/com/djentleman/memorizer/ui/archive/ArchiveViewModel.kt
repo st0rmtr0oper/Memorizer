@@ -1,23 +1,20 @@
 package com.djentleman.memorizer.ui.archive
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.djentleman.memorizer.data.repository.MemorizerRepositoryImpl
 import com.djentleman.memorizer.domain.usecases.GetArchivedListUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToActualUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToArchiveUseCase
 import com.djentleman.memorizer.domain.usecases.MoveNoteToTrashUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ArchiveViewModel(application: Application) : AndroidViewModel(application) {
-    //TODO Это неправильно, pres зависит от data
-    private val repository = MemorizerRepositoryImpl(application)
-
-    private val getArchivedListUseCase = GetArchivedListUseCase(repository)
-    private val moveNoteToActualUseCase = MoveNoteToActualUseCase(repository)
-    private val moveNoteToTrashUseCase = MoveNoteToTrashUseCase(repository)
-    private val moveNoteToArchiveUseCase = MoveNoteToArchiveUseCase(repository)
+class ArchiveViewModel @Inject constructor(
+    private val getArchivedListUseCase: GetArchivedListUseCase,
+    private val moveNoteToActualUseCase: MoveNoteToActualUseCase,
+    private val moveNoteToTrashUseCase: MoveNoteToTrashUseCase,
+    private val moveNoteToArchiveUseCase: MoveNoteToArchiveUseCase
+) : ViewModel() {
 
     val notesList = getArchivedListUseCase.getArchivedList()
 
